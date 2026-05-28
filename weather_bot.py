@@ -1,19 +1,32 @@
 import requests
 
-# 1단계에서 복사한 웹훅 URL을 아래 따옴표 안에 넣으세요.
-webhook_url = "https://discordapp.com/api/webhooks/1509537983374557357/9AGe4mkfnUm0ESk45duHNEjGx6ihKdlS28vwZefRDIVK4NL7qfu-3i5rb-zP5cu3viYI"
+WEBHOOK_URL = "https://discordapp.com/api/webhooks/1509537983374557357/9AGe4mkfnUm0ESk45duHNEjGx6ihKdlS28vwZefRDIVK4NL7qfu-3i5rb-zP5cu3viYI"
+API_KEY = "c5b724c78b0a4df3292cf2d326799747"
 
-# 디스코드로 보낼 메시지 내용
-# 예시로 제천의 날씨 정보를 담아봤습니다.
-message_data = {
-    "content": "🔔 오늘의 알림: 제천 날씨는 맑음! 외출하기 좋은 날씨입니다."
-}
+def send_jecheon_weather_api():
+    print("날씨 API를 호출하는 중...")
+    
+    url = f"http://api.openweathermap.org/data/2.5/weather?q=Jecheon&appid={API_KEY}&units=metric&lang=kr"
+    
+    try:
+        response = requests.get(url)
+        data = response.json()
+        
+        weather_desc = data['weather'][0]['description'] 
+        temp = data['main']['temp']                      
+        humidity = data['main']['humidity']             
+        
+        message = (
+            f"📡 **오늘의 제천 날씨 (API 연동)**\n"
+            f"현재 날씨 상태는 **{weather_desc}**이며, "
+            f"온도는 **{temp}°C**, 습도는 **{humidity}%** 입니다. 오늘도 좋은 하루 보내세요!"
+        )
+        
+    except Exception as e:
+        message = f"❌ 날씨 API를 불러오는 데 실패했습니다. (에러: {e})"
 
-# 디스코드로 메시지 전송!
-response = requests.post("https://discordapp.com/api/webhooks/1509537983374557357/9AGe4mkfnUm0ESk45duHNEjGx6ihKdlS28vwZefRDIVK4NL7qfu-3i5rb-zP5cu3viYI", json=message_data)
+    requests.post(WEBHOOK_URL, json={"content": message})
+    print("디스코드 전송 완료!")
 
-# 전송이 성공했는지 확인
-if response.status_code == 204:
-    print("디스코드로 메시지 전송 성공! 🎉")
-else:
-    print(f"전송 실패 ㅠㅠ 에러 코드: {response.status_code}")
+if __name__ == "__main__":
+    send_jecheon_weather_api()
