@@ -11,6 +11,8 @@ def send_jecheon_weather_api():
     try:
         response = requests.get(url)
         data = response.json()
+
+        print("API 서버의 실제 응답:", data)
         
         weather_desc = data['weather'][0]['description'] 
         temp = data['main']['temp']                      
