@@ -1,7 +1,7 @@
 import requests
 
 WEBHOOK_URL = "https://discordapp.com/api/webhooks/1509537983374557357/9AGe4mkfnUm0ESk45duHNEjGx6ihKdlS28vwZefRDIVK4NL7qfu-3i5rb-zP5cu3viYI"
-API_KEY = "301f3a82222658ec1a6ed1947f5d5578"
+API_KEY = "c5b724c78b0a4df3292cf2d326799747"
 
 def send_jecheon_weather_api():
     print("날씨 API를 호출하는 중...")
